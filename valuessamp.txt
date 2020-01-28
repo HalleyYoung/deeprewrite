@@ -1,0 +1,21 @@
+theme1_tuplets = True
+theme1_angularity = medium
+theme1_rhythmic_transformation = retrograde
+theme1_contour = 0123
+
+theme2_rhythmic_density = high
+theme2_melodic_transformation = inversion
+theme2_contour = 0231
+
+time0_scale = "Kafi"
+time0_deg = 0
+time0_has_drone_chord = Strings
+time0_meter = [3,2,2]
+time0_tuplets = True
+
+
+time1_scale = "Kafi"
+time1_deg = 5
+time1_has_drone_chord = Strings
+time1_meter = [3,2,2]
+time0_tuplets = True

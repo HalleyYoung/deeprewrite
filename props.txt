@@ -1,0 +1,11 @@
+CSEG
+DegSeq
+IntSeq
+Sonority
+ChordProg
+UseQuartal
+UseExtended
+UseChromaticism
+UseModal
+TonalCadence
+
