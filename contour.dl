@@ -1,0 +1,62 @@
+.decl note(part : number, index : number, pitch : number, duration : number, onset : number) //basic note values
+.input note
+
+.decl hasContourIndexInSlice(part : number, beg_ind : number, end_ind : number, cur_ind : number, val : number) //contour of index into subarray of notes 
+
+.decl hasContourIndexInSliceNonTrivial(part : number, beg_ind : number, end_ind : number, cur_ind : number, val : number) //remove all subarrays of size < z
+.output hasContourIndexInSliceNonTrivial
+
+.decl hasSameContour(part1 : number, beg_ind1 : number, end_ind1 : number, part2 : number, beg_ind2 : number, end_ind2 : number) //relation between two (part, beg_ind, end_ind) tuples
+
+.decl hasSameContourNonTrivial(part1 : number, beg_ind1 : number, end_ind1 : number, part_ind2 : number, beg_ind2 : number, end_ind2 : number) //like hasSameContour, but requires beg_ind1 <= end_ind1 + 3
+.output hasSameContourNonTrivial
+
+
+.decl hasInversionOfContourMaxC(part1 : number, beg_ind1 : number, end_ind1 : number, cur_ind1 : number, part_ind2 : number, beg_ind2 : number, end_ind2 : number, cur_ind2 : number, c : number) //used in calculating if two (part, beg_ind, end_ind) tuples are contoural inversions of each other
+
+
+.decl hasInversionOfContourCAtCurIndex(part1 : number, beg_ind1 : number, end_ind1 : number, cur_ind1 : number, part2 : number, beg_ind2 : number, end_ind2 : number, cur_ind2 : number, c : number) //used in calculating if two (part, beg_ind, end_ind) tuples are contoural inversions of each other
+
+.decl hasInversionOfContourNonTrivial(part1 : number, beg_ind1 : number, end_ind1 : number, part_ind2 : number, beg_ind2 : number, end_ind2 : number) //asserts the two tuples are contoural inversions and end_ind1 - beg_ind1 >= 3
+.output hasInversionOfContourNonTrivial 
+
+.decl notSamePart(part1 : number, beg_ind1 : number, end_ind1 : number, part2 : number, beg_ind2 : number, end_ind2 : number) //simple relation to determine whether comparing tuple to itself.
+
+
+notSamePart(part1, beg_ind1, end_ind1, part2, beg_ind2, end_ind2) :- part1 != part2, note(part1, beg_ind1, _, _, _), note(part1, end_ind1, _, _, _), note(part2, beg_ind2, _, _, _), note(part2, end_ind2, _, _, _).
+
+notSamePart(part1, beg_ind1, end_ind1, part2, beg_ind2, end_ind2) :- beg_ind1 != beg_ind2, note(part1, beg_ind1, _, _, _), note(part1, end_ind1, _, _, _), note(part2, beg_ind2, _, _, _), note(part2, end_ind2, _, _, _).
+
+hasContourIndexInSlice(part, beg_ind, beg_ind, beg_ind, 0) :- note(part, beg_ind, _, _, _).
+
+hasContourIndexInSlice(part, beg_ind, end_ind, cur_ind, i) :- hasContourIndexInSlice(part, beg_ind, mid_ind, cur_ind, i1), hasContourIndexInSlice(part, mid_ind, end_ind, cur_ind, i2), i = i1 + i2, note(part, beg_ind, _, _, _), note(part, mid_ind, _, _, _), note(part, end_ind, _, _, _).
+
+
+
+hasContourIndexInSlice(part, beg_ind, end_ind, cur_ind, i) :- hasContourIndexInSlice(part, beg_ind, end_ind - 1, cur_ind, i1), note(part, beg_ind, _, _, _), note(part, end_ind, p1, _, _), note(part, cur_ind, p2, _, _), p2 > p1, i = i1 + 1.
+hasContourIndexInSlice(part, beg_ind, end_ind, cur_ind, i) :- hasContourIndexInSlice(part, beg_ind, end_ind - 1, cur_ind, i), note(part, beg_ind, _, _, _), note(part, end_ind, p1, _, _), note(part, cur_ind, p2, _, _), p2 <= p1.
+
+
+hasContourIndexInSlice(part, beg_ind, end_ind, cur_ind, i) :- hasContourIndexInSlice(part, beg_ind + 1, end_ind, cur_ind, i1), note(part, beg_ind, p1, _, _), note(part, end_ind, _, _, _), note(part, cur_ind, p2, _, _), p2 >= p1, i = i1 + 1.
+hasContourIndexInSlice(part, beg_ind, end_ind, cur_ind, i) :- hasContourIndexInSlice(part, beg_ind + 1, end_ind, cur_ind, i), note(part, beg_ind, p1, _, _), note(part, end_ind, _, _, _), note(part, cur_ind, p2, _, _), p2 = p1.
+
+
+hasContourIndexInSliceNonTrivial(part, beg_ind, end_ind, cur_ind, i) :- hasContourIndexInSlice(part, beg_ind, end_ind, cur_ind, i), end_ind >= beg_ind + 3.
+
+
+hasSameContour(part1, beg_ind1, end_ind1, part2, beg_ind2, end_ind2) :- note(part1, beg_ind1, _, _, _), note(part2, beg_ind2, _, _, _), end_ind1 = beg_ind1, end_ind2 = beg_ind2.
+hasSameContour(part1, beg_ind1, end_ind1, part2, beg_ind2, end_ind2) :- hasContourIndexInSlice(part1, beg_ind1, end_ind1, beg_ind1, x), hasContourIndexInSlice(part2, beg_ind2, end_ind2, beg_ind2, x), hasSameContour(part1, beg_ind1 + 1, end_ind1, part2, beg_ind2 + 1, end_ind2).
+
+hasSameContourNonTrivial(part1, beg_ind1, end_ind1, part2, beg_ind2, end_ind2) :- hasSameContour(part1, beg_ind1, end_ind1, part2, beg_ind2, end_ind2), end_ind1 > beg_ind1, notSamePart(part1, beg_ind1, end_ind1, part2, beg_ind2, end_ind2), end_ind1 >=  beg_ind1 + 3.
+
+hasInversionOfContourNonTrivial(part1, beg_ind1, end_ind1, part2, beg_ind2, end_ind2) :- hasInversionOfContourMaxC(part1, beg_ind1, end_ind1, end_ind1, part2, beg_ind2, end_ind2, end_ind2, _), notSamePart(part1, beg_ind1, end_ind1, part2, beg_ind2, end_ind2), beg_ind1 - end_ind1 = beg_ind2 - end_ind2, end_ind1 - beg_ind1 >= 3.
+
+hasInversionOfContourCAtCurIndex(part1, beg_ind1, end_ind1, cur_ind1, part2, beg_ind2, end_ind2, cur_ind2, c):- hasContourIndexInSlice(part1, beg_ind1, end_ind1, cur_ind1, x), hasContourIndexInSlice(part2, beg_ind2, end_ind2, cur_ind2, c - x), note(part1, c, _, _, _), c <= end_ind1.
+
+
+hasInversionOfContourMaxC(part1, beg_ind1, end_ind1, cur_ind1, part2, beg_ind2, end_ind2, cur_ind2, c) :- cur_ind2 = beg_ind2, cur_ind1 = beg_ind1, hasInversionOfContourCAtCurIndex(part1, beg_ind1, end_ind1, cur_ind1, part2, beg_ind2, end_ind2, cur_ind2, c), end_ind2 - beg_ind2 = end_ind1 - beg_ind1, notSamePart(part1, beg_ind1, end_ind1, part2, beg_ind2, end_ind2), part1 != part2.
+
+hasInversionOfContourMaxC(part1, beg_ind1, end_ind1, cur_ind1, part2, beg_ind2, end_ind2, cur_ind2, c) :- hasInversionOfContourMaxC(part1, beg_ind1, end_ind1, cur_ind1 - 1, part2, beg_ind2, end_ind2, cur_ind2 - 1, c), note(part1, cur_ind1, _, _, _), note(part2, cur_ind2, _, _, _).
+
+
+

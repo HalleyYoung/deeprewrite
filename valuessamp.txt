@@ -1,21 +1,32 @@
 theme1_tuplets = True
 theme1_angularity = medium
 theme1_rhythmic_transformation = retrograde
-theme1_contour = 0123
 
 theme2_rhythmic_density = high
-theme2_melodic_transformation = inversion
-theme2_contour = 0231
+theme2_melodic_transformation = stutter
+
 
 time0_scale = "Kafi"
-time0_deg = 0
-time0_has_drone_chord = Strings
+time0_has_melody = "Violin"
+time0_has_drone_note = "Pan Flute"
 time0_meter = [3,2,2]
 time0_tuplets = True
 
-
 time1_scale = "Kafi"
-time1_deg = 5
-time1_has_drone_chord = Strings
+time1_has_melody = "Pan Flute"
+time1_has_drone_chord = "Violin"
 time1_meter = [3,2,2]
-time0_tuplets = True
+time1_rhythmic_density = "high"
+
+time2_scale = "Kafi"
+time2_has_melody = ["Violin", "Pan Flute"]
+time2_has_drone_chord = "Synth Pad"
+time2_meter = [3,2,2]
+time2_tuplets = True
+
+time3_scale = "Kafi"
+time3_has_melody = "Pan Flute"
+time3_has_drone_chord = [Synth Pad, Synth Violins]
+time3_meter = [3,2,2]
+time3_tuplets = Fakse
+time3_rhythmic_density = "high"

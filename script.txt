@@ -1,0 +1,10 @@
+Jose grew up in Spain. {Jose, Flamenco}
+Then he moved to New Orleans. {Jose, Zydeco}
+It was there that he met Sally. {Sally, Zydeco}
+Sally was the most beautiful person he'd ever met. {Sally, romantic}
+They got married and moved back to Spain, where they had a child. {Jose, Sally, child, Flamenco, relaxed}
+But then an alien invasion came, and infected the child. {child, horror, alien, suspense}
+In the end, Jose and Sally ended up having to go to space to beg the alien king to save their child. {Jose, Sally, child, alien, suspense}
+The alien king was touched by their plea, and their child was saved. {suspense, happy, alien, child}
+They all lived happily ever after. {sally, jose, child, happy, relaxed}
+

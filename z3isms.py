@@ -64,6 +64,9 @@ theme_is_defined_vars = [[Bool("is_defined_" + var + "_" + attr) for var in all_
 time_enum_vals = {}
 theme_enum_vals = {}
 
+pitch_reg = [BitVector("x") for x in ]
+rhy_reg = {}
+
 
 
 enum_values = {}

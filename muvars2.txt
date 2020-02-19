@@ -1,0 +1,1 @@
+is_sequence :: melody_transform
